@@ -4,18 +4,21 @@ import { LeafletModule } from '@asymmetrik/angular2-leaflet';
 
 import { LeafletHexbinDirective } from './hexbin/leaflet-hexbin.directive';
 import { LeafletPingDirective } from './ping/leaflet-ping.directive';
+import { LeafletD3SvgDirective } from './svg/leaflet-d3svg.directive';
 
 @NgModule({
 	imports: [
-		LeafletModule
+		LeafletModule,
 	],
 	exports: [
 		LeafletHexbinDirective,
-		LeafletPingDirective
+		LeafletPingDirective,
+		LeafletD3SvgDirective,
 	],
 	declarations: [
 		LeafletHexbinDirective,
-		LeafletPingDirective
+		LeafletPingDirective,
+		LeafletD3SvgDirective,
 	]
 })
 export class LeafletD3Module {
