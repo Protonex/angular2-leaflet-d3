@@ -112,6 +112,65 @@ LeafletPingDirective.propDecorators = {
     'pingObserverReady': [{ type: _angular_core.Output, args: ['leafletPingObserver',] },],
 };
 
+var LeafletD3SvgDirective = (function () {
+    function LeafletD3SvgDirective(leafletDirective) {
+        // Hexbin data binding
+        this.d3SvgData = [];
+        // Interaction events
+        this.d3SvgMouseover = new _angular_core.EventEmitter();
+        this.d3SvgMouseout = new _angular_core.EventEmitter();
+        this.d3SvgClick = new _angular_core.EventEmitter();
+        // Fired when the layer is created
+        this.layerReady = new _angular_core.EventEmitter();
+        this.leafletDirective = new _asymmetrik_angular2Leaflet.LeafletDirectiveWrapper(leafletDirective);
+    }
+    LeafletD3SvgDirective.prototype.ngOnInit = function () {
+        var _this = this;
+        this.leafletDirective.init();
+        var map = this.leafletDirective.getMap();
+        this.d3SvgLayer = L.hexbinLayer(this.d3SvgOptions);
+        // Fire the ready event
+        this.layerReady.emit(this.d3SvgLayer);
+        // register for the hexbin events
+        this.d3SvgLayer.dispatch().on('mouseover', function (p) { _this.d3SvgMouseover.emit(p); });
+        this.d3SvgLayer.dispatch().on('mouseout', function (p) { _this.d3SvgMouseout.emit(p); });
+        this.d3SvgLayer.dispatch().on('click', function (p) { _this.d3SvgClick.emit(p); });
+        this.d3SvgLayer.addTo(map);
+        // Initialize the data (in case the data was set before the directive was initialized)
+        this.setD3SvgData(this.d3SvgData);
+    };
+    LeafletD3SvgDirective.prototype.ngOnChanges = function (changes) {
+        // Set the new data
+        if (changes['d3SvgData']) {
+            this.setD3SvgData(changes['d3SvgData'].currentValue);
+        }
+    };
+    LeafletD3SvgDirective.prototype.setD3SvgData = function (data) {
+        // Only if there is a hexbinLayer do we apply the data
+        if (null != this.d3SvgLayer) {
+            this.d3SvgLayer.data(data);
+        }
+    };
+    return LeafletD3SvgDirective;
+}());
+LeafletD3SvgDirective.decorators = [
+    { type: _angular_core.Directive, args: [{
+                selector: '[leafletD3Svg]'
+            },] },
+];
+/** @nocollapse */
+LeafletD3SvgDirective.ctorParameters = function () { return [
+    { type: _asymmetrik_angular2Leaflet.LeafletDirective, },
+]; };
+LeafletD3SvgDirective.propDecorators = {
+    'd3SvgData': [{ type: _angular_core.Input, args: ['leafletD3Svg',] },],
+    'd3SvgOptions': [{ type: _angular_core.Input, args: ['leafletD3SvgOptions',] },],
+    'd3SvgMouseover': [{ type: _angular_core.Output, args: ['leafletD3SvgMouseover',] },],
+    'd3SvgMouseout': [{ type: _angular_core.Output, args: ['leafletD3SvgMouseout',] },],
+    'd3SvgClick': [{ type: _angular_core.Output, args: ['leafletD3SvgClick',] },],
+    'layerReady': [{ type: _angular_core.Output, args: ['leafletD3SvgLayerReady',] },],
+};
+
 var LeafletD3Module = (function () {
     function LeafletD3Module() {
     }
@@ -123,15 +182,17 @@ var LeafletD3Module = (function () {
 LeafletD3Module.decorators = [
     { type: _angular_core.NgModule, args: [{
                 imports: [
-                    _asymmetrik_angular2Leaflet.LeafletModule
+                    _asymmetrik_angular2Leaflet.LeafletModule,
                 ],
                 exports: [
                     LeafletHexbinDirective,
-                    LeafletPingDirective
+                    LeafletPingDirective,
+                    LeafletD3SvgDirective,
                 ],
                 declarations: [
                     LeafletHexbinDirective,
-                    LeafletPingDirective
+                    LeafletPingDirective,
+                    LeafletD3SvgDirective,
                 ]
             },] },
 ];

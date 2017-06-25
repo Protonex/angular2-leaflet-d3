@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/angular2-leaflet';
 import { LeafletHexbinDirective } from './hexbin/leaflet-hexbin.directive';
 import { LeafletPingDirective } from './ping/leaflet-ping.directive';
+import { LeafletD3SvgDirective } from './svg/leaflet-d3svg.directive';
 var LeafletD3Module = (function () {
     function LeafletD3Module() {
     }
@@ -14,15 +15,17 @@ export { LeafletD3Module };
 LeafletD3Module.decorators = [
     { type: NgModule, args: [{
                 imports: [
-                    LeafletModule
+                    LeafletModule,
                 ],
                 exports: [
                     LeafletHexbinDirective,
-                    LeafletPingDirective
+                    LeafletPingDirective,
+                    LeafletD3SvgDirective,
                 ],
                 declarations: [
                     LeafletHexbinDirective,
-                    LeafletPingDirective
+                    LeafletPingDirective,
+                    LeafletD3SvgDirective,
                 ]
             },] },
 ];
