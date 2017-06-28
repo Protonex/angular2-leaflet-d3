@@ -46,7 +46,7 @@
 		"core-js": "2.4",
 		"css-loader": "0.27",
 		"d3": "4.6",
-		"d3-hexbin": "0.2",
+		"d3-hexbin": "^0.2.2",
 		"file-loader": "0.10",
 		"gulp": "3.9",
 		"gulp-filter": "5.0",

@@ -37,12 +37,12 @@ export class LeafletD3SvgDirective
 		this.leafletDirective.init();
 
 		let map = this.leafletDirective.getMap();
-		this.d3SvgLayer = L.hexbinLayer(this.d3SvgOptions);
+		this.d3SvgLayer = L.d3SvgLayer(this.d3SvgOptions);
 
 		// Fire the ready event
 		this.layerReady.emit(this.d3SvgLayer);
 
-		// register for the hexbin events
+		// register for the d3Svg events
 		this.d3SvgLayer.dispatch().on('mouseover', (p: any) => { this.d3SvgMouseover.emit(p); });
 		this.d3SvgLayer.dispatch().on('mouseout', (p: any) => { this.d3SvgMouseout.emit(p); });
 		this.d3SvgLayer.dispatch().on('click', (p: any) => { this.d3SvgClick.emit(p); });
@@ -65,7 +65,7 @@ export class LeafletD3SvgDirective
 
 	private setD3SvgData(data: any[]) {
 
-		// Only if there is a hexbinLayer do we apply the data
+		// Only if there is a d3SvgLayer do we apply the data
 		if (null != this.d3SvgLayer) {
 			this.d3SvgLayer.data(data);
 		}
